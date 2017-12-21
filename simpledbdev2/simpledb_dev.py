@@ -39,7 +39,8 @@ import sys, os, re, base64, cPickle, uuid, web, portalocker, hmac, hashlib, time
 import web.httpserver
 
 MAX_DOMAINS = 100
-THIS_DIR = os.path.dirname(sys.argv[0])
+#THIS_DIR = os.path.dirname(sys.argv[0])
+THIS_DIR = os.path.abspath(os.path.dirname(__file__))
 DATA_DIR = os.path.join(THIS_DIR, 'data')
 if not os.path.exists(DATA_DIR):
     os.mkdir(DATA_DIR)
