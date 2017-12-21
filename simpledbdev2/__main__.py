@@ -12,8 +12,7 @@ from simpledbdev2 import __description__, __project_name__, __version__
 from simpledbdev2.config import Config
 
 def _do_serve(config, args):
-    print("args={}".format(args))
-    simpledb_dev.run_simpledb()
+    simpledb_dev.run_simpledb(("0.0.0.0", args.port))
 
 def _main(argv=None):
     if argv is None:
@@ -29,6 +28,12 @@ def _main(argv=None):
 
     serve_parser = subparsers.add_parser("serve", help="Serve SimpleDB API")
     serve_parser.set_defaults(func=_do_serve)
+    serve_parser.add_argument(
+        "--port",
+        "-p",
+        type=int,
+        default=8080,
+        help="Port number")
 
     args = parser.parse_args(argv)
     args.func(config, args)

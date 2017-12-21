@@ -1214,13 +1214,13 @@ class SimpleDBTest():
         
         s.PutAttributes(input)
 
-def run_simpledb():
+def run_simpledb(address):
     web.config.setdefault('debug', DEV_MODE)
     app = web.application(urls, globals())
-    web.httpserver.runsimple(app.wsgifunc(), ("0.0.0.0", 8080))
+    web.httpserver.runsimple(app.wsgifunc(), address)
     
 if __name__ == "__main__":     
     if len(sys.argv) > 1 and str(sys.argv[1]) == 'test' :
         SimpleDBTest().run()
     else :
-        run_simpledb()
+        run_simpledb(("0.0.0.0", 8080))
