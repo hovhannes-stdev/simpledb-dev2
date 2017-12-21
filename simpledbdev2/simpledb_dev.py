@@ -44,7 +44,11 @@ THIS_DIR = os.path.abspath(os.path.dirname(__file__))
 DATA_DIR = os.path.join(THIS_DIR, 'data')
 if not os.path.exists(DATA_DIR):
     os.mkdir(DATA_DIR)
-VERSION = '2007-11-07'
+
+_SUPPORTED_VERSIONS = set([
+    "2007-11-07",
+    "2009-04-15"
+])
 
 #Enable to turn off template caching etc.
 DEV_MODE = False
@@ -119,8 +123,12 @@ class SimpleDBDevDispatcher:
             self._error('AuthFailure', '403 Forbidden', 'AWS was not able to validate the provided access credentials.')
 
     def _checkVersion(self, input):
-        if input.get('Version', '') != VERSION :
-                self._error('NoSuchVersion', '400 Bad Request', 'SimpleDB/dev only supports version 2007-11-07 currently')
+        request_version = input.get("Version", "")
+        if request_version not in _SUPPORTED_VERSIONS:
+            self._error(
+                "NoSuchVersion",
+                "400 Bad Request",
+                "SimpleDB/dev only supports versions {} currently".format(", ".join(sorted(_SUPPORTED_VERSIONS))))
 
     def _error(self, code, httpStatus, msg = ''):
         raise SimpleDBError(getRequestId(), httpStatus, code, msg)
