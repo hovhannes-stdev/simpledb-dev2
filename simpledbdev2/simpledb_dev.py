@@ -36,6 +36,8 @@
 
 import sys, os, re, base64, cPickle, uuid, web, portalocker, hmac, hashlib, time
 
+import web.httpserver
+
 MAX_DOMAINS = 100
 THIS_DIR = os.path.dirname(sys.argv[0])
 DATA_DIR = os.path.join(THIS_DIR, 'data')
@@ -1206,7 +1208,7 @@ class SimpleDBTest():
 def run_simpledb():
     web.config.setdefault('debug', DEV_MODE)
     app = web.application(urls, globals())
-    app.run()
+    web.httpserver.runsimple(app.wsgifunc(), ("0.0.0.0", 8080))
     
 if __name__ == "__main__":     
     if len(sys.argv) > 1 and str(sys.argv[1]) == 'test' :
