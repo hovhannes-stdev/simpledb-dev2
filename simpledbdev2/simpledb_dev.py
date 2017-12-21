@@ -35,7 +35,7 @@
 #===============================================================================
 
 import sys, os, re, base64, cPickle, uuid, web, portalocker, hmac, hashlib, time
-
+import unittest
 import web.httpserver
 
 MAX_DOMAINS = 100
@@ -1220,9 +1220,10 @@ def run_simpledb(address, data_dir):
 
     app = web.application(urls, globals())
     web.httpserver.runsimple(app.wsgifunc(), address)
-    
-if __name__ == "__main__":     
-    if len(sys.argv) > 1 and str(sys.argv[1]) == 'test' :
+
+class SimpleDBDevTestCase(unittest.TestCase):
+    def test_all(self):
         SimpleDBTest().run()
-    else :
-        run_simpledb(("0.0.0.0", 8080), os.path.join(THIS_DIR, "data"))
+
+if __name__ == "__main__":
+    run_simpledb(("0.0.0.0", 8080), os.path.join(THIS_DIR, "data"))

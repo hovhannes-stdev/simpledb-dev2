@@ -11,20 +11,26 @@ import unittest
 def _get_module_names(package_name):
     return ["{}.{}".format(package_name, name) for _, name, _ in pkgutil.walk_packages([package_name])]
 
-def _get_test_suite(module_name):
+def _get_doctest_suite(imported_module):
     try:
-        return doctest.DocTestSuite(importlib.import_module(module_name))
+        return doctest.DocTestSuite(imported_module)
     except ValueError:
         return
 
 def suite():
-    suite = unittest.TestSuite()
+    test_suite = unittest.TestSuite()
     for module_name in _get_module_names("simpledbdev2"):
-        tests = _get_test_suite(module_name)
-        if tests:
-            suite.addTests(tests)
+        imported_module = importlib.import_module(module_name)
 
-    return suite
+        unittest_suite = unittest.TestLoader().loadTestsFromModule(imported_module)
+        if unittest_suite is not None:
+            test_suite.addTests(unittest_suite)
+
+        doctest_suite = _get_doctest_suite(imported_module)
+        if doctest_suite is not None:
+            test_suite.addTests(doctest_suite)
+
+    return test_suite
 
 if __name__ == "__main__":
     unittest.TextTestRunner(verbosity=2).run(suite())
