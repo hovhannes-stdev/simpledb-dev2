@@ -1202,11 +1202,14 @@ class SimpleDBTest():
         self._convertAttrs(attrs, input)
         
         s.PutAttributes(input)
+
+def run_simpledb():
+    web.config.setdefault('debug', DEV_MODE)
+    app = web.application(urls, globals())
+    app.run()
     
 if __name__ == "__main__":     
     if len(sys.argv) > 1 and str(sys.argv[1]) == 'test' :
         SimpleDBTest().run()
     else :
-        web.config.setdefault('debug', DEV_MODE)
-        app = web.application(urls, globals())
-        app.run()
+        run_simpledb()
