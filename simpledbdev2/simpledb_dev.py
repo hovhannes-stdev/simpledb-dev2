@@ -55,11 +55,6 @@ web.internalerror = web.debugerror
 
 render = web.template.render(os.path.join(THIS_DIR, 'templates'), cache=(not DEV_MODE))
 
-urls = (
-    '/', 'SimpleDBDevDispatcher'
-)
-
-
 def getRequestId():
     '''Return a request id.'''
     return uuid.uuid4()
@@ -1211,6 +1206,25 @@ class SimpleDBTest():
         
         s.PutAttributes(input)
 
+_ROUTES = [
+    ("/", SimpleDBDevDispatcher)
+]
+
+def _make_app(routes):
+    tags = {}
+    urls = []
+    fvars = {}
+    for route, cls in routes:
+        tag = tags.get(cls)
+        if tag is None:
+            tag = "___class_{0:>03}".format(len(tags))
+            tags[cls] = tag
+        urls.append(route)
+        urls.append(tag)
+        fvars[tag] = cls
+
+    return web.application(tuple(urls), fvars)
+
 def run_simpledb(address, data_dir):
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
@@ -1218,8 +1232,9 @@ def run_simpledb(address, data_dir):
     web.config.setdefault('debug', DEV_MODE)
     web.config["data_dir"] = data_dir
 
-    app = web.application(urls, globals())
-    web.httpserver.runsimple(app.wsgifunc(), address)
+    web.httpserver.runsimple(
+        _make_app(_ROUTES).wsgifunc(),
+        address)
 
 class SimpleDBDevTestCase(unittest.TestCase):
     def test_all(self):
