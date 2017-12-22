@@ -1,62 +1,76 @@
-Mirror Notes
-------------
+# simpledb-dev2
 
-This is an unofficial mirror of a google code project by Matthew Painter.
-I have reproduced it here in hopes of generating interest in extending it to
-support the new functionality added in recent API updates.
+[![View on PyPI](https://img.shields.io/pypi/v/simpledb-dev2.svg)](https://pypi.python.org/pypi/simpledb-dev2)
+[![Licence](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/rcook/simpledb-dev2/master/LICENSE)
 
-Project Information
--------------------
+This is a fork of [SimpleDB/dev][simpledb-dev] by Matthew Painter via [this unofficial mirror][latortuga]. This fork has been renamed to _simpledb-dev2_ so that it does not collide with the original project.
 
-SimpleDB/dev provides a local SimpleDB server, so you can develop offline, without even currently having a SimpleDB account.
+It currently supports the "2007-11-07" SimpleDB API level but has been hacked to fake support for "2009-04-15"&mdash;this has not been tested much!
 
-Now supports Linux, OS X and Windows >= XP.
+## Project information
 
-Currently implemented:
+simpledb-dev2 provides a local SimpleDB server, so you can develop offline, without requiring a SimpleDB account. It has been tested on Linux, macOS and Windows.
 
-The current 2007-11-07 REST API
+This package currently implements:
 
-* _EVERY Action_ - SimpleDB/dev is functionally complete :o)
-* Correct HTTP Error Responses, as per the technical documentation
+* The whole "2007-11-07" REST API
+* Correct HTTP error responses as per the technical documentation
 * A large suite of tests created from the examples provided in the technical documentation
 
-Currently not implemented:
+It does not implement:
 
-* The SOAP API.
-* Authentication - signature value checking.
-* Timestamp format and expiration checking.
+* The SOAP API
+* Authentication&mdash;signature value checking
+* Timestamp format and expiration checking
 * HTTPS
 
-To run a SimpleDB/dev server, you'll need python (tested with 2.5, standard with OS X Leopard), and web.py (tested with 0.3.1). You can install web.py easily if you have python's easy install on your path:
+To run the simpledb-dev2 server, you'll need a working Python 2.7 installation. You can install using [pip][pip] as follows:
 
-    easy_install web.py
+```
+pip install simpledb-dev2
+```
 
-If you don't have easy install, you can install it by downloading the bootstrapper ez_install.py, and running it. (Windows users, easy_install.exe is installed in the Scripts directory in your python directory.)
+This will install the package and its dependencies including [web.py][web-py]. Specify the `--user` option to the `pip` command line to install for the current user only.
 
-Windows users will have to also install the Python extensions for windows.
+This will create a `simpledb-dev2` script/executable on your path. You can start the simpledb-dev2 web server as follows:
 
-So now just download the latest release, and start up the SimpleDB/dev web server:
+```
+simpledb-dev2 serve
+```
 
-    python simpledb_dev.py <port number, default 8080>
+This will serve the SimpleDB API on the default port of 8080. To specify an alternative port, use the `--port` option:
+
+```
+simpledb-dev2 serve --port 1234
+```
 
 If the server doesn't start, or you have other problems, it's pretty easy to run the tests and see some examples of request/response:
 
-    python simpledb_dev.py test
+```
+simpledb-dev2 test
+```
 
-Remember, this is a development tool, and not meant for storing or querying large amounts of data - I do not know yet how big you can get before running into issues, but I suspect that with the current storage and querying design it is not that large :o) Now that I have a base, I may start trying to see how I can improve the performance...
+Remember, this is a development tool, and not meant for storing or querying large amounts of data&mdash;I do not know yet how big you can get before running into issues, but I suspect that with the current storage and querying design it is not that large :o) Now that I have a base, I may start trying to see how I can improve the performance&hellip;
 
-Although this conforms to the specifications in the technical documentation, SimpleDB/dev has not been tested with every possible SDB client library, and I am looking forward to people in the oss community trying to find bugs and peculiarities - it is after all, a work in progress!
+Although this conforms to the specifications in the technical documentation, simpledb-dev2 has not been tested with every possible SDB client library, and I am looking forward to people in the OSS community trying to find bugs and peculiarities&mdash;it is after all, a work in progress!
 
 _So enjoy developing your SimpleDB applications now, not later!_
 
-Matthew Painter
+## Contributing
 
-Contributing
-------------
+1. Fork this repository
+2. Create a feature branch (`git checkout -b feature-branch`)
+3. Commit your changes (`git commit -m "Added support for the new API version"`)
+4. Push to an upstream branch (`git push -u origin feature-branch`)
+5. Create a [pull request][pulls] describing your fix/feature
 
-1. Fork it.
-2. Create a branch (`git checkout -b new_api`)
-3. Commit your changes (`git commit -am "Added support for the new API version"`)
-4. Push to the branch (`git push origin new_api`)
-5. Create an [Issue][1] with a link to your branch
+## Licence
 
+Released under [GNU General Public License v3 (GPLv3)][licence]
+
+[latortuga]: https://github.com/latortuga/simpledb-dev
+[licence]: LICENSE
+[pip]: https://pip.pypa.io/
+[pulls]: https://github.com/rcook/simpledb-dev2/pulls
+[simpledb-dev]: http://code.google.com/p/simpledb-dev/
+[web-py]: http://webpy.org/
