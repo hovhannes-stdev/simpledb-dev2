@@ -38,6 +38,8 @@ import sys, os, re, base64, cPickle, uuid, web, portalocker, hmac, hashlib, time
 import unittest
 import web.httpserver
 
+from pyprelude.temp_util import temp_dir
+
 MAX_DOMAINS = 100
 #THIS_DIR = os.path.dirname(sys.argv[0])
 THIS_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -1238,7 +1240,9 @@ def run_simpledb(address, data_dir):
 
 class SimpleDBDevTestCase(unittest.TestCase):
     def test_all(self):
-        SimpleDBTest().run()
+        with temp_dir() as data_dir:
+            web.config["data_dir"] = data_dir
+            SimpleDBTest().run()
 
 if __name__ == "__main__":
     run_simpledb(("0.0.0.0", 8080), os.path.join(THIS_DIR, "data"))
