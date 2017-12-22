@@ -49,5 +49,6 @@ setup(
         ]
     },
     include_package_data=True,
+    package_data={ "simpledbdev2.templates": ["*.xml"] },
     test_suite="simpledbdev2.tests.suite",
     zip_safe=False)
