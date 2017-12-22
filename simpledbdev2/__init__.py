@@ -3,5 +3,5 @@
 ##################################################
 
 __project_name__ = "simpledb-dev2"
-__version__ = "0.1"
+__version__ = "0.2"
 __description__ = "A local SimpleDB server"
