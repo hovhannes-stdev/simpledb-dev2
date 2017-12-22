@@ -12,7 +12,7 @@ from simpledbdev2 import __description__, __project_name__, __version__
 from simpledbdev2.config import Config
 
 def _do_serve(config, args):
-    simpledb_dev.run_simpledb(("0.0.0.0", args.port))
+    simpledb_dev.run_simpledb(("0.0.0.0", args.port), config.data_dir)
 
 def _main(argv=None):
     if argv is None:

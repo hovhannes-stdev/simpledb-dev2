@@ -40,6 +40,7 @@ setup(
     license="GNU GPL v3",
     packages=find_packages(),
     install_requires=[
+        "pyprelude",
         "web.py"
     ],
     entry_points={

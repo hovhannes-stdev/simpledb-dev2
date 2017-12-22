@@ -41,9 +41,6 @@ import web.httpserver
 MAX_DOMAINS = 100
 #THIS_DIR = os.path.dirname(sys.argv[0])
 THIS_DIR = os.path.abspath(os.path.dirname(__file__))
-DATA_DIR = os.path.join(THIS_DIR, 'data')
-if not os.path.exists(DATA_DIR):
-    os.mkdir(DATA_DIR)
 
 _SUPPORTED_VERSIONS = set([
     "2007-11-07",
@@ -201,7 +198,7 @@ class SimpleDBDev:
         m = hashlib.md5()
         m.update(awsAccountAccessKey)
         k = m.hexdigest()
-        dir = os.path.join(DATA_DIR, k)
+        dir = os.path.join(web.config.data_dir, k)
         if not os.path.exists(dir):
             os.mkdir(dir)
         return dir
@@ -1214,8 +1211,13 @@ class SimpleDBTest():
         
         s.PutAttributes(input)
 
-def run_simpledb(address):
+def run_simpledb(address, data_dir):
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+
     web.config.setdefault('debug', DEV_MODE)
+    web.config["data_dir"] = data_dir
+
     app = web.application(urls, globals())
     web.httpserver.runsimple(app.wsgifunc(), address)
     
@@ -1223,4 +1225,4 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and str(sys.argv[1]) == 'test' :
         SimpleDBTest().run()
     else :
-        run_simpledb(("0.0.0.0", 8080))
+        run_simpledb(("0.0.0.0", 8080), os.path.join(THIS_DIR, "data"))
