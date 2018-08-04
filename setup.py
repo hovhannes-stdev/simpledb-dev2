@@ -24,7 +24,7 @@ version = props["version"]
 description = props["description"]
 
 setup(
-    name="simpledb-dev2",
+    name="simpledb-dev3",
     version=version,
     description=description,
     setup_requires=["setuptools-markdown"],
@@ -32,11 +32,11 @@ setup(
     classifiers=[
         "Development Status :: 3 - Alpha",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.6",
     ],
-    url="https://github.com/rcook/simpledb-dev2",
+    url="https://github.com/hovhannes-stdev/simpledb-dev2",
     author="Matthew Painter and others",
-    author_email="rcook@rcook.org",
+    author_email="hovhannes@stdevmail.com",
     license="GNU GPL v3",
     packages=find_packages(),
     install_requires=[
@@ -45,7 +45,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "simpledb-dev2 = simpledbdev2.__main__:_main"
+            "simpledb-dev3 = simpledbdev2.__main__:_main"
         ]
     },
     include_package_data=True,
