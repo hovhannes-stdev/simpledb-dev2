@@ -3,3 +3,4 @@
 /dist/
 /simpledb_dev2.egg-info/
 *.pyc
+.idea

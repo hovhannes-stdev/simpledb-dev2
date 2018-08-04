@@ -34,7 +34,7 @@
 #
 #===============================================================================
 
-import sys, os, re, base64, cPickle, uuid, web, portalocker, hmac, hashlib, time
+import sys, os, re, base64, pickle, uuid, web, portalocker, hmac, hashlib, time
 import unittest
 import web.httpserver
 
@@ -85,7 +85,7 @@ class SimpleDBDevDispatcher:
             self._checkSignature(input)
             return self._runAction(input)
         
-        except SimpleDBError, e:
+        except SimpleDBError as e:
             web.ctx.status = e.httpStatus
             return render.error(e.errorCode, e.msg, e.requestId)
 
@@ -193,7 +193,7 @@ class SimpleDBDev:
     
     def _getAccountDataDir(self, awsAccountAccessKey):
         m = hashlib.md5()
-        m.update(awsAccountAccessKey)
+        m.update(awsAccountAccessKey.encode('utf-8'))
         k = m.hexdigest()
         dir = os.path.join(web.config.data_dir, k)
         if not os.path.exists(dir):
@@ -211,7 +211,7 @@ class SimpleDBDev:
         
         try :
             f = open(domainsFile,'r')
-            r =  cPickle.load(f)
+            r =  pickle.load(f)
             f.close()
         except :
             r = []
@@ -220,7 +220,7 @@ class SimpleDBDev:
     
     def _setDomains(self, domainsFile, domains):
         f = open(domainsFile,'w')
-        r =  cPickle.dump(domains, f)
+        r =  pickle.dump(domains, f)
         f.close()
     
     def _getDomainPickleFile(self, accountDataDir, domainName, checkExists = False):
@@ -269,7 +269,7 @@ class SimpleDBDev:
             try:
                portalocker.lock(lockf, portalocker.LOCK_EX)
                break
-            except portalocker.LockException, e:
+            except portalocker.LockException as e:
                # File locked by somebody else. Do some other work, then try again later.
                if i == 9 : raise e
                time.sleep(1)
@@ -307,7 +307,7 @@ class SimpleDBDev:
 
         if not os.path.exists(domainFile):
             f = open(domainFile, "w")
-            cPickle.dump({'name': domainName, 'data': {}}, f)
+            pickle.dump({'name': domainName, 'data': {}}, f)
             f.close()
             
         return getRequestId()
@@ -392,7 +392,7 @@ class SimpleDBDev:
             try:
                portalocker.lock(lockf, portalocker.LOCK_EX)
                break
-            except portalocker.LockException, e:
+            except portalocker.LockException as e:
                # File locked by somebody else. Do some other work, then try again later.
                if i == 9 : raise e
                time.sleep(1)
@@ -404,7 +404,7 @@ class SimpleDBDev:
         
         # dump it out
         tempf = open(domainFile+'.tmp', "w")
-        cPickle.dump(domainData, tempf)
+        pickle.dump(domainData, tempf)
         tempf.close()
         
         # windows won't let you overwrite seemingly - wtf!?
@@ -536,7 +536,7 @@ class SimpleDBDev:
     def _getDomainData(self, domainFile):
         # read in the domain data
         f = open(domainFile, "r")
-        domainData = cPickle.load(f)
+        domainData = pickle.load(f)
         f.close()
         return domainData
 
@@ -871,7 +871,7 @@ class SimpleDBTest():
 
     def run(self):
         
-        print "\nRunning tests and printing out sample XML output...\n"
+        print("\nRunning tests and printing out sample XML output...\n")
         
         self.checkData()
         self.testDeleteDomain()
@@ -885,7 +885,7 @@ class SimpleDBTest():
         self.testListDomains()
         self.testDeleteDomain()
         
-        print "\nOK\n"
+        print("\nOK\n")
 
     def testDeleteAttributes(self):
         
@@ -924,9 +924,9 @@ class SimpleDBTest():
         assert item == {}
 
     def sample(self, input):        
-        print "Sample "+input['Action']+":\n"
-        print '?'+web.http.urlencode(input)+"\n"
-        print SimpleDBDevDispatcher().run(input)
+        print("Sample "+input['Action']+":\n")
+        print('?'+web.http.urlencode(input)+"\n")
+        print(SimpleDBDevDispatcher().run(input))
         
     def testListDomains(self):
         domains, nextToken, requestId = SimpleDBDev().ListDomains({'AWSAccessKeyId' : self.awsKey, 'Version' : self.version, 'DomainName' : self.domain})
