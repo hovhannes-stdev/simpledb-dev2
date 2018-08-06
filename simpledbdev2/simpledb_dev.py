@@ -211,7 +211,7 @@ class SimpleDBDev:
             return []
         
         try :
-            f = open(domainsFile,'r')
+            f = open(domainsFile,'rb')
             r =  pickle.load(f)
             f.close()
         except :
@@ -536,7 +536,7 @@ class SimpleDBDev:
 
     def _getDomainData(self, domainFile):
         # read in the domain data
-        f = open(domainFile, "r")
+        f = open(domainFile, "rb")
         domainData = pickle.load(f)
         f.close()
         return domainData
