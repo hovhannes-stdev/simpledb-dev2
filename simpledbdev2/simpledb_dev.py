@@ -220,7 +220,7 @@ class SimpleDBDev:
         return r
     
     def _setDomains(self, domainsFile, domains):
-        f = open(domainsFile,'w')
+        f = open(domainsFile,'wb')
         r =  pickle.dump(domains, f)
         f.close()
     
@@ -307,7 +307,7 @@ class SimpleDBDev:
         self._setDomains(domainsFile, domains)
 
         if not os.path.exists(domainFile):
-            f = open(domainFile, "w")
+            f = open(domainFile, "wb")
             pickle.dump({'name': domainName, 'data': {}}, f)
             f.close()
             
@@ -404,7 +404,7 @@ class SimpleDBDev:
         ret = function(domainData, input)
         
         # dump it out
-        tempf = open(domainFile+'.tmp', "w")
+        tempf = open(domainFile+'.tmp', "wb")
         pickle.dump(domainData, tempf)
         tempf.close()
         

@@ -41,7 +41,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "pyprelude",
-        "web.py"
+        "web.py==0.40-dev1"
     ],
     entry_points={
         "console_scripts": [
