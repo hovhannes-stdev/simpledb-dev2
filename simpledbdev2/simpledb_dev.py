@@ -226,7 +226,7 @@ class SimpleDBDev:
     
     def _getDomainPickleFile(self, accountDataDir, domainName, checkExists = False):
         m = hashlib.md5()
-        m.update(domainName)
+        m.update(domainName.encode('utf-8'))
         k = m.hexdigest()
         file = os.path.join(accountDataDir, k)
         if checkExists and not os.path.exists(file):
