@@ -34,11 +34,12 @@
 #
 #===============================================================================
 
-import sys, os, re, base64, pickle, uuid, web, portalocker, hmac, hashlib, time
+import sys, os, re, base64, pickle, uuid, web, hmac, hashlib, time
 import unittest
 import web.httpserver
 
 from pyprelude.temp_util import temp_dir
+from . import portalocker
 
 MAX_DOMAINS = 100
 #THIS_DIR = os.path.dirname(sys.argv[0])
