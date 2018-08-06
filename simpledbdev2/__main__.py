@@ -8,7 +8,7 @@ import os
 import unittest
 import sys
 
-from . import simpledb_dev
+import simpledb_dev
 from simpledbdev2 import __description__, __project_name__, __version__
 from simpledbdev2.config import Config
 from simpledbdev2.tests import suite
